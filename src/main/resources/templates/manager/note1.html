@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/editormd/css/editormd.preview.min.css"  th:href="@{/manager/css/editormd.preview.min.css}"/>
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/editormd/css/editormd.css" th:href="@{/manager/css/editormd.css}"/>
+    <!--引入js文件-->
+    <script src="<%=request.getContextPath()%>/resources/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+    <script src="<%=request.getContextPath()%>/resources/editormd/lib/marked.min.js" th:src="@{/manager/lib/marked.min.js}"></script>
+    <script src="<%=request.getContextPath()%>/resources/editormd/lib/prettify.min.js" th:src="@{/manager/lib/prettify.min.js}"> </script>
+    <script src="<%=request.getContextPath()%>/resources/editormd/editormd.min.js" th:src="@{/manager/editormd.min.js}"></script>
+
+<body>
+    <div id="content1" class="panel-body" th:utext="${note.content}"></div>
+    <div id="content2" class="panel-body" th:utext="${note.contentHtml}"></div>
+</body>
+<script type="text/javascript">
+
+    // editormd.markdownToHTML("content");
+    editormd.markdownToHTML("content2");
+
+</script>
+</html>

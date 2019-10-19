@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>Simple example - Editor.md examples</title>
+    <link rel="stylesheet" href="css/style.css" th:href="@{/editormd/css/style.css}"/>
+    <link rel="stylesheet" href="../css/editormd.css" th:href="@{/editormd/css/editormd.css}"/>
+    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}">
+    <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />
+    <script src="./lib/layui/layui.js" charset="utf-8" th:src="@{/lib/layui/layui.js}"></script>
+    <script src="js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+    <script src="../editormd.min.js" th:src="@{/editormd/editormd.js}"></script>
+    <script src="../plugins/image-handle-paste/image-handle-paste.js" th:src="@{/editormd/plugins/image-handle-paste/image-handle-paste.js}"></script>
+
+
+</head>
+<body >
+
+
+<div id="layout">
+
+    <form method="post" action="/manager/note">
+        <div class="layui-form-item">
+            <input type="hidden" th:value="${note.notekey}" name="notekey">
+            <input type="hidden" th:value="${note.dirkey}" name="dirkey">
+            <div class="" style="width: 90%;margin-left: auto;margin-right: auto;height: 50px;margin-top: 20px">
+                <input id="title" type="text" name="title" placeholder="标题" autocomplete="off"
+                       class="layui-input" th:value="${note.title}">
+            </div>
+            <div id="test-editormd">
+                <textarea style="display:none;" name="content" id="content" th:utext="${note.content}"> </textarea>
+                <textarea style="display:none;" name="contentHtml" id="contentHtml" th:utext="${note.contentHtml}"
+                          class="editormd-html-textarea"> </textarea>
+            </div>
+        </div>
+
+        <div style="width:90%;margin: 10px auto;">
+            <input id="submit" name="save" value="保存" class="layui-btn layui-btn-lg layui-btn-radius layui-btn-normal" style="width: 80px"/>
+        </div>
+    </form>
+</div>
+
+
+
+
+<script type="text/javascript">
+    var testEditor;
+
+    $(function() {
+        testEditor = editormd("test-editormd", {
+            width   : "90%",
+            height  : 640,
+            syncScrolling : "single",
+            path    : "/editormd/lib/",
+            saveHTMLToTextarea : true,
+            imageUpload : true,
+            imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL : "/uploadfile"
+        });
+
+        /*
+        // or
+        testEditor = editormd({
+            id      : "test-editormd",
+            width   : "90%",
+            height  : 640,
+            path    : "../lib/"
+        });
+        */
+        testEditor.imagePaste();
+    });
+
+    $(function  () {
+        layui.use('form', function(){
+            var form = layui.form;
+            var title=$("#title").val();
+
+            $("#submit").on("click", function () {
+                var new_title = $("#title").val();
+                if(new_title === ""){
+                    layer.msg('请输入标题',{time:1000,icon: 2});
+                    return false;
+                }
+                if(new_title.length >= 200){
+                    layer.msg('标题长度不能大于100字符',{time:1000,icon: 2});
+                    return false;
+                }
+
+                $.ajax({
+                    url: "/manager/note"
+                    , type: "post"
+                    , data : $("form").serialize()
+                    , success: function (obj) {
+                        layer.msg('保存成功',{time:1000});
+                        if (new_title !== title){
+                            var a = $("[name='notekey']").val();
+                        $("[notekey=" + a + "]",window.parent.document).html(new_title);
+                            // element.init();
+                            parent.element.init();
+                        }
+
+                    }
+                    ,error:function () {
+                        layer.msg('保存失败',{time:1000});
+                    }
+                });
+
+
+            });
+
+
+
+            window.setInterval(function () {
+                $("#submit").click();
+            },60000);
+
+            $(document).keydown(function(e){
+                // if(e.ctrlKey && e.which == 83  || e.which == 10) {
+                if(e.altKey && e.which == 83  ) {
+                    $("#submit").click();
+                }
+            });
+
+        });
+    })
+</script>
+</body>
+</html>

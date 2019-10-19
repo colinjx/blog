@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jx.blog.dao.NoteMapper">
+  <resultMap id="BaseResultMap" type="cn.jx.blog.entity.Note">
+    <!--@mbg.generated-->
+    <id column="notekey" jdbcType="INTEGER" property="notekey" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+    <result column="dirkey" jdbcType="INTEGER" property="dirkey" />
+    <result column="content_html" jdbcType="LONGVARCHAR" property="contentHtml" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    notekey, title, content, dirkey, content_html
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from note
+    where notekey = #{notekey,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from note
+    where notekey = #{notekey,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="notekey" keyProperty="notekey" parameterType="cn.jx.blog.entity.Note" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into note (title, content, dirkey, 
+      content_html)
+    values (#{title,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR}, #{dirkey,jdbcType=INTEGER}, 
+      #{contentHtml,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="notekey" keyProperty="notekey" parameterType="cn.jx.blog.entity.Note" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into note
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="title != null and title != ''">
+        title,
+      </if>
+      <if test="content != null and content != ''">
+        content,
+      </if>
+      <if test="dirkey != null">
+        dirkey,
+      </if>
+      <if test="contentHtml != null and contentHtml != ''">
+        content_html,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="title != null and title != ''">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null and content != ''">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="dirkey != null">
+        #{dirkey,jdbcType=INTEGER},
+      </if>
+      <if test="contentHtml != null and contentHtml != ''">
+        #{contentHtml,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.jx.blog.entity.Note">
+    <!--@mbg.generated-->
+    update note
+    <set>
+      <if test="title != null and title != ''">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null and content != ''">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="dirkey != null">
+        dirkey = #{dirkey,jdbcType=INTEGER},
+      </if>
+      <if test="contentHtml != null and contentHtml != ''">
+        content_html = #{contentHtml,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where notekey = #{notekey,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.jx.blog.entity.Note">
+    <!--@mbg.generated-->
+    update note
+    set title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=LONGVARCHAR},
+      dirkey = #{dirkey,jdbcType=INTEGER},
+      content_html = #{contentHtml,jdbcType=LONGVARCHAR}
+    where notekey = #{notekey,jdbcType=INTEGER}
+  </update>
+    <select id="findNoteList" resultMap="BaseResultMap">
+        SELECT notekey,title FROM  note WHERE dirkey = #{dirkey} order by notekey desc
+    </select>
+</mapper>
