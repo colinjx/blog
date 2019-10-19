@@ -35,8 +35,8 @@ my:
 spring:
   profiles: prod
   datasource:
-    username: root
-    password: root
+    username: blog
+    password: blog1234
     url: jdbc:mysql://182.254.168.91:3306/blog?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
     driver-class-name: com.mysql.jdbc.Driver
 my:
@@ -47,9 +47,9 @@ my:
 spring:
   profiles: dev
   datasource:
-    username: root
-    password: root
-    url: jdbc:mysql://127.0.0.1:3306/blog?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
+    username: blog
+    password: blog1234
+    url: jdbc:mysql://182.254.168.91/blog?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
     driver-class-name: com.mysql.jdbc.Driver
 my:
   interceptor:
